@@ -1,7 +1,28 @@
 import AlgorithmForm from "./AlgorithmForm";
 import { Github, Linkedin } from 'lucide-react';
+import { useVisualizationContext } from "../hooks/useVisualizationContext";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function SidePanel() {
+  const { selectedAlgorithm } = useVisualizationContext();
+
+  const getAlgorithmCode = (algorithm: string) => {
+    switch (algorithm) {
+      case 'fibonacci':
+        return `function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}`;
+      case 'factorial':
+        return `function factorial(n) {
+  if (n <= 1) return 1;
+  return n * factorial(n - 1);
+}`;
+      default:
+        return '';
+    }
+  };
 
   return (
     <div
@@ -29,6 +50,20 @@ export default function SidePanel() {
           Select an algorithm and visualize its recursive calls step by step!
         </p>
         <AlgorithmForm/>
+        {selectedAlgorithm && (
+          <div className="mt-6">
+            <h2 className="text-lg font-semibold mb-2">Algorithm Code:</h2>
+            <div className="bg-black rounded-md p-4 overflow-x-auto">
+              <SyntaxHighlighter
+                language="javascript"
+                style={oneDark}
+                customStyle={{ background: 'transparent', margin: 0 }}
+              >
+                {getAlgorithmCode(selectedAlgorithm)}
+              </SyntaxHighlighter>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Footer */}

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import FactorialFormFields from "./form fields/FactorialFormFields";
-import FibonacciFormFields from "./form fields/FibonacciFormFields";
+import FactorialFormFields from "./formFields/FactorialFormFields";
+import FibonacciFormFields from "./formFields/FibonacciFormFields";
 import { useVisualizationContext } from "../hooks/useVisualizationContext";
 import { useVisualization } from "../hooks/useVisualization";
 import { useCanvasContext } from "../hooks/useCanvasContext";
@@ -15,7 +15,7 @@ export default function AlgorithmForm() {
     } = useVisualizationContext();
 
   const { setNodes, setEdges } = useCanvasContext();
-  const { visualizeFibonacci, setAbort } = useVisualization();
+  const { visualizeFibonacci, visualizeFactorial, setAbort } = useVisualization();
 
   const clearCanvas = () => {
     setNodes([]);
@@ -24,9 +24,9 @@ export default function AlgorithmForm() {
 
   const handleAbort = (e: any) => {
     e.preventDefault();
+    clearCanvas();
     setAbort(true);
     setOngoingVisualization(false);
-    clearCanvas();
   }
 
   const handleSubmit = (e: any) => {
@@ -37,8 +37,15 @@ export default function AlgorithmForm() {
       clearCanvas();
       const n = Number(formData.get("fibN"));
       setAbort(false);
-      visualizeFibonacci(n, 'root', 0, 0);
-      setOngoingVisualization(true);  
+      visualizeFibonacci(n, 'root', 0, -150 * n, 150 * n);
+      setOngoingVisualization(true);
+
+    } else if(selectedAlgorithm === 'factorial'){
+      clearCanvas();
+      const n = Number(formData.get("factorialN"));
+      setAbort(false);
+      visualizeFactorial(n, 'root', 0, 0);
+      setOngoingVisualization(true);
     }
   }
 
