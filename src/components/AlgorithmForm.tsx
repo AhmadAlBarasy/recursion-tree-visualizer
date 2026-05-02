@@ -2,7 +2,6 @@
 import FactorialFormFields from "./formFields/FactorialFormFields";
 import FibonacciFormFields from "./formFields/FibonacciFormFields";
 import { useVisualizationContext } from "../hooks/useVisualizationContext";
-import { useVisualization } from "../hooks/useVisualization";
 import { useCanvasContext } from "../hooks/useCanvasContext";
 
 export default function AlgorithmForm() {
@@ -10,12 +9,14 @@ export default function AlgorithmForm() {
   const {
     ongoingVisualization,
     setOngoingVisualization,
-    selectedAlgorithm, 
-    setSelectedAlgorithm
-    } = useVisualizationContext();
+    selectedAlgorithm,
+    setSelectedAlgorithm,
+    visualizeFibonacci,
+    visualizeFactorial,
+    setAbort,
+  } = useVisualizationContext();
 
   const { setNodes, setEdges } = useCanvasContext();
-  const { visualizeFibonacci, visualizeFactorial, setAbort } = useVisualization();
 
   const clearCanvas = () => {
     setNodes([]);

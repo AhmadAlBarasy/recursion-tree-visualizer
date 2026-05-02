@@ -18,7 +18,7 @@ export default function FibonacciFormFields() {
         max={5}
         required
         disabled={ongoingVisualization}
-        placeholder="e.g. 6"
+        placeholder="e.g. 5"
         className="
           bg-gray-800 text-white
           p-2

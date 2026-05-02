@@ -1,11 +1,12 @@
 import AlgorithmForm from "./AlgorithmForm";
+import PlayController from "./PlayController";
 import { Github, Linkedin } from 'lucide-react';
 import { useVisualizationContext } from "../hooks/useVisualizationContext";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function SidePanel() {
-  const { selectedAlgorithm } = useVisualizationContext();
+  const { selectedAlgorithm, ongoingVisualization } = useVisualizationContext();
 
   const getAlgorithmCode = (algorithm: string) => {
     switch (algorithm) {
@@ -38,7 +39,8 @@ export default function SidePanel() {
         md:h-screen
         flex flex-col
         justify-between
-        overflow-y-auto
+        overflow-y-auto 
+        md:overflow-hidden
       "
     >
       {/* Main content */}
@@ -62,12 +64,13 @@ export default function SidePanel() {
                 {getAlgorithmCode(selectedAlgorithm)}
               </SyntaxHighlighter>
             </div>
+            {ongoingVisualization && <PlayController />}
           </div>
         )}
       </div>
 
       {/* Footer */}
-      <div className="mt-6 text-center text-gray-400 text-sm">
+      <div className="mt-3 text-center text-gray-400 text-sm">
         <p>Built by: Ahmad Albarasy</p>
         <div className="flex justify-center space-x-4 mt-2">
           <a
