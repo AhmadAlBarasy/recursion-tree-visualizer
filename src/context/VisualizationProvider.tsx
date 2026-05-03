@@ -182,6 +182,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
             edge.id !== `edge-${nodeId}` && edge.source !== nodeId && edge.target !== nodeId,
         ),
       );
+      setCenter(position.x, position.y, { zoom: 1, duration: 1000 });
       return;
     }
 

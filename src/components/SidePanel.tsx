@@ -3,7 +3,7 @@ import PlayController from "./PlayController";
 import { Github, Linkedin } from 'lucide-react';
 import { useVisualizationContext } from "../hooks/useVisualizationContext";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function SidePanel() {
   const { selectedAlgorithm, ongoingVisualization } = useVisualizationContext();
@@ -58,8 +58,8 @@ export default function SidePanel() {
             <div className="bg-black rounded-md p-4 overflow-x-auto">
               <SyntaxHighlighter
                 language="javascript"
-                style={oneDark}
-                customStyle={{ background: 'transparent', margin: 0 }}
+                style={atomDark}
+                customStyle={{ background: 'transparent', padding: 0, margin: 0 }}
               >
                 {getAlgorithmCode(selectedAlgorithm)}
               </SyntaxHighlighter>
