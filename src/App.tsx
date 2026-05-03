@@ -4,14 +4,16 @@ import { CanvasProvider } from "./context/CanvasProvider";
 import { VisualizationProvider } from "./context/VisualizationProvider";
 
 function App() {
-  return <div className="flex w-full h-screen">
-    <VisualizationProvider>
+  return (
+    <div className="flex w-full h-screen">
       <CanvasProvider>
-        <SidePanel />
-        <Canvas />
+        <VisualizationProvider>
+          <SidePanel />
+          <Canvas />
+        </VisualizationProvider>
       </CanvasProvider>
-    </VisualizationProvider>
-  </div>
+    </div>
+  );
 }
 
 export default App;
