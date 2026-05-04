@@ -11,6 +11,16 @@ export type VisualizationContextType = {
   goPreviousStep: () => void;
   visualizeFibonacci: (n: number, id: string, y: number, minX: number, maxX: number) => void;
   visualizeFactorial: (n: number, id: string, x: number, y: number) => void;
+  visualizeBinarySearch: (
+    arr: number[],
+    target: number,
+    id: string,
+    left: number,
+    right: number,
+    y: number,
+    minX: number,
+    maxX: number,
+  ) => void;
   setAbort: (bool: boolean) => void;
   canGoNext: boolean;
   canGoPrevious: boolean;

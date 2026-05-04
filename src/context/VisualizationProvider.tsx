@@ -108,6 +108,82 @@ function buildFibonacciSteps(
   return { head: rootStep, tail };
 }
 
+function buildBinarySearchSteps(
+  arr: number[],
+  target: number,
+  id: string,
+  left: number,
+  right: number,
+  y: number,
+  minX: number,
+  maxX: number,
+  parentId?: string,
+) {
+  const x = (minX + maxX) / 2;
+  const text = `binarySearch(${left}, ${right}, arr)`;
+
+  const rootStep = createStepNode({
+    nodeId: id,
+    text,
+    action: "create",
+    position: { x, y },
+    parentId,
+  });
+
+  let tail = rootStep;
+
+  if (left <= right) {
+    const mid = Math.floor((left + right) / 2);
+    const midValue = arr[mid];
+
+    if (target < midValue) {
+      const leftBranch = buildBinarySearchSteps(
+        arr,
+        target,
+        `${id}_L`,
+        left,
+        mid - 1,
+        y + 100,
+        minX,
+        x - 50,
+        id,
+      );
+      tail.next = leftBranch.head;
+      leftBranch.head.prev = tail;
+      tail = leftBranch.tail;
+    } else if (target > midValue) {
+      const rightBranch = buildBinarySearchSteps(
+        arr,
+        target,
+        `${id}_R`,
+        mid + 1,
+        right,
+        y + 100,
+        x + 50,
+        maxX,
+        id,
+      );
+      tail.next = rightBranch.head;
+      rightBranch.head.prev = tail;
+      tail = rightBranch.tail;
+    }
+  }
+
+  const deleteStep = createStepNode({
+    nodeId: id,
+    text,
+    action: "delete",
+    position: { x, y },
+    parentId,
+  });
+
+  tail.next = deleteStep;
+  deleteStep.prev = tail;
+  tail = deleteStep;
+
+  return { head: rootStep, tail };
+}
+
 export function VisualizationProvider({ children }: { children: ReactNode }) {
   const [ongoingVisualization, setOngoingVisualization] = useState(false);
   const [selectedAlgorithm, setSelectedAlgorithm] = useState("");
@@ -290,6 +366,24 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
     setIsPlaying(true);
   };
 
+  const visualizeBinarySearch = (
+    arr: number[],
+    target: number,
+    id: string,
+    left: number,
+    right: number,
+    y: number,
+    minX: number,
+    maxX: number,
+  ) => {
+    const steps = buildBinarySearchSteps(arr, target, id, left, right, y, minX, maxX);
+    clearTimer();
+    setStepListHead(steps.head);
+    setCurrentStep(null);
+    setOngoingVisualization(true);
+    setIsPlaying(true);
+  };
+
   return (
     <VisualizationContext.Provider
       value={{
@@ -303,6 +397,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
         goPreviousStep,
         visualizeFibonacci,
         visualizeFactorial,
+        visualizeBinarySearch,
         setAbort,
         canGoNext,
         canGoPrevious,

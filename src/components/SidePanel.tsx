@@ -20,6 +20,14 @@ export default function SidePanel() {
   if (n <= 1) return 1;
   return n * factorial(n - 1);
 }`;
+      case 'binarySearch':
+        return `function binarySearch(arr, left, right, target) {
+  if (left > right) return -1;
+  const mid = Math.floor((left + right) / 2);
+  if (arr[mid] === target) return mid;
+  if (target < arr[mid]) return binarySearch(arr, left, mid - 1, target);
+  return binarySearch(arr, mid + 1, right, target);
+}`;
       default:
         return '';
     }
@@ -40,7 +48,8 @@ export default function SidePanel() {
         flex flex-col
         justify-between
         overflow-y-auto 
-        md:overflow-hidden
+        md:overflow-y-auto
+        custom-scrollbar
       "
     >
       {/* Main content */}
@@ -59,6 +68,8 @@ export default function SidePanel() {
               <SyntaxHighlighter
                 language="javascript"
                 style={atomDark}
+                showLineNumbers={true}
+
                 customStyle={{ background: 'transparent', padding: 0, margin: 0 }}
               >
                 {getAlgorithmCode(selectedAlgorithm)}
