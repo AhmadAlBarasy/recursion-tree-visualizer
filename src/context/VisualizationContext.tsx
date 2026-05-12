@@ -18,8 +18,6 @@ export type VisualizationContextType = {
     left: number,
     right: number,
     y: number,
-    minX: number,
-    maxX: number,
   ) => void;
   setAbort: (bool: boolean) => void;
   canGoNext: boolean;

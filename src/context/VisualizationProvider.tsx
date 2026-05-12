@@ -115,18 +115,17 @@ function buildBinarySearchSteps(
   left: number,
   right: number,
   y: number,
-  minX: number,
-  maxX: number,
   parentId?: string,
 ) {
-  const x = (minX + maxX) / 2;
   const text = `binarySearch(${left}, ${right}, arr)`;
+
+  const xCord = left + right === 0 ? 0 : (left + right) / 2 * 50; // Scale x position based on left and right indices
 
   const rootStep = createStepNode({
     nodeId: id,
     text,
     action: "create",
-    position: { x, y },
+    position: { x: xCord, y },
     parentId,
   });
 
@@ -134,6 +133,7 @@ function buildBinarySearchSteps(
 
   if (left <= right) {
     const mid = Math.floor((left + right) / 2);
+    console.log(mid);
     const midValue = arr[mid];
 
     if (target < midValue) {
@@ -144,8 +144,6 @@ function buildBinarySearchSteps(
         left,
         mid - 1,
         y + 100,
-        minX,
-        x - 50,
         id,
       );
       tail.next = leftBranch.head;
@@ -159,8 +157,6 @@ function buildBinarySearchSteps(
         mid + 1,
         right,
         y + 100,
-        x + 50,
-        maxX,
         id,
       );
       tail.next = rightBranch.head;
@@ -173,7 +169,7 @@ function buildBinarySearchSteps(
     nodeId: id,
     text,
     action: "delete",
-    position: { x, y },
+    position: { x: xCord, y },
     parentId,
   });
 
@@ -212,7 +208,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
           id: nodeId,
           position,
           data: { label: text, },
-          style: { width: 60 },
+          style: { width: (selectedAlgorithm === "binarySearch" ? 120 : 60) },
         },
       ]);
 
@@ -245,7 +241,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
       ),
     );
       setCenter(position.x, position.y, { zoom: 1, duration: 1000 });
-  }, [setCenter, setEdges, setNodes]);
+  }, [setCenter, setEdges, setNodes, selectedAlgorithm]);
 
   const revertSimulationStep = useCallback((step: SimulationStepNode) => {
     const { nodeId, text, position, parentId, action } = step.data;
@@ -268,7 +264,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
         id: nodeId,
         position,
         data: { label: text },
-        style: { width: 60 },
+        style: { width: (selectedAlgorithm === "binarySearch" ? 120 : 60) },
       },
     ]);
 
@@ -290,7 +286,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
     }
 
     setCenter(position.x, position.y, { zoom: 1, duration: 1000 });
-  }, [setCenter, setEdges, setNodes]);
+  }, [setCenter, setEdges, setNodes, selectedAlgorithm]);
 
   const canGoPrevious = currentStep !== null;
   const canGoNext = stepListHead !== null && (currentStep ? currentStep.next !== null : true);
@@ -373,10 +369,8 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
     left: number,
     right: number,
     y: number,
-    minX: number,
-    maxX: number,
   ) => {
-    const steps = buildBinarySearchSteps(arr, target, id, left, right, y, minX, maxX);
+    const steps = buildBinarySearchSteps(arr, target, id, left, right, y);
     clearTimer();
     setStepListHead(steps.head);
     setCurrentStep(null);
