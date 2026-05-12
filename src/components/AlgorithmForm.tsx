@@ -68,6 +68,7 @@ export default function AlgorithmForm() {
 
       if (values.length === 0) {
         setErrorMessage("Please enter a sorted array of integers.");
+        setTimeout(() => setErrorMessage(null), 2000);
         return;
       }
 
@@ -77,22 +78,25 @@ export default function AlgorithmForm() {
       const invalidNumber = arr.some((value) => Number.isNaN(value) || !Number.isInteger(value));
       if (invalidNumber) {
         setErrorMessage("Array must contain only integers.");
+        setTimeout(() => setErrorMessage(null), 2000);
         return;
       }
 
       if (Number.isNaN(target) || !Number.isInteger(target)) {
         setErrorMessage("Target must be an integer.");
+        setTimeout(() => setErrorMessage(null), 2000);
         return;
       }
 
       const isSorted = arr.every((value, index) => index === 0 || value >= arr[index - 1]);
       if (!isSorted) {
         setErrorMessage("Array must be sorted in ascending order.");
+        setTimeout(() => setErrorMessage(null), 2000);
         return;
       }
 
       setAbort(false);
-      visualizeBinarySearch(arr, target, 'root', 0, arr.length - 1, 0, -200, 200);
+      visualizeBinarySearch(arr, target, 'root', 0, arr.length - 1, 0);
       setOngoingVisualization(true);
       return;
     }
